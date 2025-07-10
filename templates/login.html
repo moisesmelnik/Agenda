@@ -1,0 +1,30 @@
+
+<!-- Declaração do tipo de documento HTML5 -->
+<!DOCTYPE html>
+<!-- Início da estrutura do documento HTML -->
+<html lang="pt-br">
+<!-- Cabeçalho contendo metadados e link para o CSS -->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Login - MDM Consultoria</title>
+<!-- Inclusão do CSS específico para a página de login -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-login.css') }}">
+</head>
+<!-- Corpo visível da página -->
+<body>
+<!-- Container principal do formulário de login -->
+    <div class="login-container">
+        <h2>MDM Consultoria</h2>
+<!-- Formulário de login: envia usuário e senha para o backend -->
+        <form action="/login" method="post">
+<!-- Campo de entrada para o nome de usuário -->
+            <input type="text" name="username" placeholder="Usuário" required>
+<!-- Campo de entrada para a senha -->
+            <input type="password" name="password" placeholder="Senha" required>
+<!-- Botão de envio do formulário de login -->
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+</body>
+</html>

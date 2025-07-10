@@ -1,0 +1,235 @@
+
+<!-- Declaração do tipo de documento HTML5 -->
+<!DOCTYPE html>
+
+<!-- Início da estrutura HTML com definição do idioma (pt-br) -->
+<html lang="pt-br">
+<!-- Cabeçalho da página: define metadados, título e estilos -->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<title>Cadastro</title>
+<!-- Inclusão do CSS externo para estilização do formulário de cadastro -->
+<link href="{{ url_for('static', filename='style-cadastro.css') }}" rel="stylesheet"/>
+<!-- Estilos internos para layout em grid do formulário -->
+<style>
+        .form-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 10px 20px;
+            align-items: center;
+        }
+
+        .form-grid label {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .form-grid input,
+        .form-grid select,
+        .form-grid textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .form-grid textarea {
+            resize: vertical;
+        }
+
+<!-- Área com botões de ação: salvar novo, salvar alterações, limpar formulário -->
+        .form-buttons {
+            grid-column: 1 / span 2;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<!-- Início do corpo da página (conteúdo visível) -->
+<body>
+<!-- Wrapper principal da interface de cadastro -->
+<div class="cadastro-wrapper">
+<div class="cadastro-container">
+<!-- Título principal da tela -->
+<h2>Cadastro</h2>
+<div style="margin-bottom: 20px;">
+{% if dados %}{% set record = dados %}{% else %}{% set record = {} %}{% endif %}
+<!-- Formulário de busca: envia nome ou CPF/CNPJ via GET para buscar dados no Firestore -->
+<form action="/cadastrar" method="GET">
+<label for="busca_nome">Buscar por Nome:</label>
+<!-- Campo de entrada para busca por nome, com preenchimento automático se dados existirem -->
+<input id="busca_nome" maxlength="15" name="nome" type="text" value="{{ dados.nome }}"/>
+<label for="busca_fisco_id">ou CPF/CNPJ:</label>
+<!-- Campo de entrada para busca por CPF/CNPJ com valor preenchido via Jinja -->
+<input id="busca_fisco_id" maxlength="19" name="fisco_id" type="text" value="{{ dados.fisco_id }}"/>
+<button type="submit">Buscar</button>
+</form>
+</div>{% if dados %}{% set record = dados %}{% else %}{% set record = {} %}{% endif %}
+<!-- Formulário principal de cadastro com envio via POST -->
+<form action="/cadastrar" class="form-grid" method="POST">
+<label for="nome">Nome:</label>
+<!-- Campo de entrada para busca por nome, com preenchimento automático se dados existirem -->
+<input id="nome" maxlength="15" name="nome" placeholder="" required="" type="text" value="{{ dados.nome }}"/>
+<label for="sobrenome">Sobrenome:</label>
+<input id="sobrenome" maxlength="20" name="sobrenome" placeholder="" required="" type="text" value="{{ dados.sobrenome }}"/>
+<label for="fiscal">Fiscal:</label>
+<!-- Campo dropdown para selecionar o tipo de pessoa: Física ou Jurídica -->
+<select id="fiscal" name="fiscal">
+<option value="Pessoa Física">Pessoa Física</option>
+<option value="Pessoa Jurídica">Pessoa Jurídica</option>
+</select>
+<label for="fisco_id">CPF/CNPJ:</label>
+<!-- Campo de entrada para busca por CPF/CNPJ com valor preenchido via Jinja -->
+<input id="fisco_id" maxlength="19" name="fisco_id" type="text" value="{{ dados.fisco_id }}"/>
+<label for="data_nascimento">Data de Nascimento:</label>
+<!-- Campo para entrada da data de nascimento com formatação -->
+<input id="data_nascimento" name="data_nascimento" placeholder="dd/mm/aaaa" type="text" value="{{ dados.data_nascimento }}"/>
+<label for="cep">CEP:</label>
+<!-- Campo CEP: ao sair do foco (blur), ativa script ViaCEP para preencher endereço -->
+<input id="cep" maxlength="10" name="cep" type="text" value="{{ dados.cep }}"/>
+<label for="rua">Rua:</label>
+<!-- Campos de endereço que são preenchidos automaticamente pela resposta da API ViaCEP -->
+<input id="rua" maxlength="50" name="rua" type="text" value="{{ dados.rua }}"/>
+<label for="numero">Número:</label>
+<input id="numero" maxlength="5" name="numero" type="text" value="{{ dados.numero }}"/>
+<label for="bairro">Bairro:</label>
+<!-- Campos de endereço que são preenchidos automaticamente pela resposta da API ViaCEP -->
+<input id="bairro" maxlength="15" name="bairro" type="text" value="{{ dados.bairro }}"/>
+<label for="municipio">Município:</label>
+<!-- Campos de endereço que são preenchidos automaticamente pela resposta da API ViaCEP -->
+<input id="municipio" maxlength="20" name="municipio" type="text" value="{{ dados.municipio }}"/>
+<label for="estado">Estado:</label>
+<input id="estado" maxlength="15" name="estado" type="text" value="{{ dados.estado }}"/>
+<label for="pais">País:</label>
+<input id="pais" maxlength="15" name="pais" type="text" value="{{ dados.pais }}"/>
+<label for="telefones1">Telefone 1:</label>
+<!-- Campos para entrada de até dois números de telefone -->
+<input id="telefones1" maxlength="15" name="telefones" type="text" value="{{ dados.telefones }}"/>
+<label for="telefones2">Telefone 2:</label>
+<!-- Campos para entrada de até dois números de telefone -->
+<input id="telefones2" maxlength="15" name="telefones" type="text" value="{{ dados.telefones }}"/>
+<label for="email">E-mail:</label>
+<input id="email" maxlength="25" name="email" type="email" value="{{ dados.email }}"/>
+<label for="facebook">Facebook:</label>
+<input id="facebook" maxlength="25" name="facebook" type="text" value="{{ dados.facebook }}"/>
+<label for="instagram">Instagram:</label>
+<input id="instagram" maxlength="25" name="instagram" type="text" value="{{ dados.instagram }}"/>
+<label for="notas">Notas:</label>
+<!-- Campo para observações ou informações adicionais sobre a pessoa -->
+<textarea id="notas" maxlength="256" name="notas" rows="3">{{ record.notas }}</textarea>
+
+<!-- Área com botões de ação: salvar novo, salvar alterações, limpar formulário -->
+<div class="form-buttons">
+    {% if record.documento_id %}
+        <input type="hidden" name="documento_id" value="{{ record.documento_id }}">
+        <button type="submit">SALVAR ALTERAÇÕES</button>
+    {% else %}
+        <button type="submit">SALVAR</button>
+    {% endif %}
+    <button type="button" onclick="novoCadastro()">NOVO CADASTRO</button>
+</div>
+
+<<script>
+<!--
+    Função JavaScript que:
+    - Limpa todos os campos dos dois formulários (POST e GET)
+    - Zera o documento_id (evita sobrescrever)
+    - Redireciona para /cadastrar para evitar preenchimento automático de dados anteriores
+-->
+function novoCadastro() {
+    // Limpa formulário de POST (cadastro)
+    const formPost = document.querySelector('form[method="POST"]');
+    if (formPost) {
+        formPost.reset();
+        const hiddenDocId = formPost.querySelector('input[name="documento_id"]');
+        if (hiddenDocId) hiddenDocId.value = "";
+    }
+
+    // Limpa formulário de GET (busca)
+    const formGet = document.querySelector('form[method="GET"]');
+    if (formGet) {
+        formGet.reset();
+    }
+
+    // Redireciona para /cadastrar sem parâmetros de busca
+    window.location.href = "/cadastrar";
+}
+</script>
+
+</div></form><div id="resultado">
+{% if resultado %}
+    <h3></h3>
+
+{% endif %}
+</div>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("cep").addEventListener("blur", function () {
+        let cep = this.value.replace(/\D/g, '');
+        if (cep.length === 8) {
+<!--
+    Script para integração com o ViaCEP:
+    - Após digitar e sair do campo CEP (evento 'blur'), envia requisição à API do ViaCEP
+    - Se encontrar o CEP, preenche automaticamente os campos: rua, bairro, município e estado
+    - Se o CEP não existir, exibe alerta para o usuário
+-->
+            fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.erro) {
+                        document.getElementById("rua").value = data.logradouro || "";
+                        document.getElementById("bairro").value = data.bairro || "";
+                        document.getElementById("municipio").value = data.localidade || "";
+                        document.getElementById("estado").value = data.uf || "";
+                    } else {
+                        alert("CEP não encontrado.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar CEP:', error);
+                });
+        }
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+<!--
+    Função que aplica máscaras dinâmicas de entrada:
+    - Substitui os caracteres ao digitar para CPF, CNPJ, datas e CEP
+    - A máscara usada depende do tipo de campo selecionado (Pessoa Física ou Jurídica)
+-->
+    function aplicarMascara(input, mascara) {
+        input.addEventListener("input", function () {
+            let i = 0;
+            const valor = this.value.replace(/\D/g, "");
+            this.value = mascara.replace(/#/g, () => valor[i++] || "");
+        });
+    }
+
+    const fiscal = document.getElementById("fiscal");
+    const fiscoId = document.getElementById("fisco_id");
+    const nascimento = document.getElementById("data_nascimento");
+    const cep = document.getElementById("cep");
+
+    fiscal.addEventListener("change", function () {
+        fiscoId.value = "";
+        if (this.value === "Pessoa Física") {
+            aplicarMascara(fiscoId, "###.###.###-##");
+        } else {
+            aplicarMascara(fiscoId, "##.###.###/####-##");
+        }
+    });
+
+    aplicarMascara(nascimento, "##/##/####");
+    aplicarMascara(cep, "#####-###");
+
+    fiscal.dispatchEvent(new Event("change"));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: agenda-familiar
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "bash start.sh"
+    envVars:
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        value: agenda1-464719-5a0b388ebd41.json

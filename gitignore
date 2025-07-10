@@ -1,0 +1,19 @@
+
+# Ambiente virtual Python
+venv/
+__pycache__/
+*.pyc
+
+# Arquivos de log e cache
+*.log
+
+# Chave de autenticação do Firebase/Firestore
+*.json
+
+# Configurações locais e de editor
+.env
+.vscode/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db

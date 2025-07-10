@@ -1,0 +1,33 @@
+
+<!-- Declaração do tipo de documento HTML5 -->
+<!DOCTYPE html>
+<!-- Início da estrutura HTML da página -->
+<html lang="pt-br">
+<!-- Cabeçalho com título e charset -->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Membros da Família {{ sobrenome }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<!-- Início do corpo da página -->
+<body>
+    <h1>Família {{ sobrenome }}</h1>
+    {% if membros %}
+    <ul>
+        {% for membro in membros %}
+        <li>
+            <strong>{{ membro.nome }}</strong> ({{ membro.idade }} anos)
+            {% if membro.aniversario %}
+            🎉 <a href="{{ membro.whatsapp }}" target="_blank">Enviar parabéns pelo WhatsApp</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Nenhum membro encontrado para essa família.</p>
+    {% endif %}
+<!-- Link para voltar à tela principal de cadastro -->
+    <a href="/index">Voltar</a> | <a href="/logout">Sair</a>
+</body>
+</html>

@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: url("/static/fundo.webp") no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+}
+
+/* Container externo que centraliza o conteúdo da tela de cadastro */
+.cadastro-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    width: 100%;
+}
+
+/* Bloco principal da interface com sombra e arredondamento */
+.cadastro-container {
+    background-color: rgba(255, 255, 255, 0.90);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 600px;
+}
+
+.cadastro-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.cadastro-container label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.cadastro-container input,
+.cadastro-container select,
+.cadastro-container textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.cadastro-container textarea {
+    resize: vertical;
+}
+
+.cadastro-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #5c6bc0;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.cadastro-container button:hover {
+    background-color: #3949ab;
+}
+
+.links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.links a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #3949ab;
+    font-weight: bold;
+}
+
+
+/* Responsividade para telas pequenas */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    form, .formulario, .container, .login-box {
+        width: 90% !important;
+        margin: auto !important;
+    }
+    input, button, label {
+        font-size: 1rem !important;
+    }
+}
